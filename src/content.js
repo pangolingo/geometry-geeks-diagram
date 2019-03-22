@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App, { WHEEL_SIZES, COLORS } from './constants';
+import { WHEEL_SIZES, COLORS } from './constants';
+import App from './App';
 
 const initializeReact = (el, bikes) => { ReactDOM.render(<App bikes={bikes} />, el) }
 
