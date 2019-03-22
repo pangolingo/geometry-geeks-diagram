@@ -1,15 +1,27 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
+  "short_name": "GG Diagram",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "name": "Geometry Geeks Diagram",
+  "version": "1.0",
+  "description": "Show a geometry diagram allowing you to compare bikes on GeometryGeeks.bike",
+  "manifest_version": 2,
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://geometrygeeks.bike/*","https://geometrygeeks.bike/*"],
+      "js": ["static/js/content.js"],
+      "css": ["static/css/content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    "static/js/main.js",
+    "static/js/main.js.map",
+    "static/js/content.js",
+    "static/js/content.js.map"
+  ]
 }

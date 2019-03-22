@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import './App.css';
+import { WHEEL_SIZES } from './constants';
 
 class GeoForm extends Component {
+
+  renderWheelSizeOptions = () => {
+    return _.map(WHEEL_SIZES, (mm, name) => (<option value={mm} key={mm}>{name}</option>));
+  }
 
   render() {
     const { bike, handleGeoInputChange, handleBikeEnable } = this.props;
@@ -14,14 +20,7 @@ class GeoForm extends Component {
       <label><input type="checkbox" checked={bike.enabled} onChange={handleBikeEnable} /> Enabled</label><br />
       <label>Wheel/Tire Size</label>
         <select name="wheelSize" value={geo.wheelSize} onChange={handleGeoInputChange} >
-          {/* http://www.bikecalc.com/wheel_size_math */}
-          <option value="740">29"</option>
-          <option value="682">700c</option>
-          <option value="690">27"</option>
-          <option value="674">650b</option>
-          <option value="670">26"</option>
-          <option value="610">24"</option>
-          <option value="512">20"</option>
+          {this.renderWheelSizeOptions()}
         </select>
       <br />
       <label>Seat Tube Length</label><input type="number" min="0" max="1000" name="seatTubeLen" value={geo.seatTubeLen} onChange={handleGeoInputChange} /><br />

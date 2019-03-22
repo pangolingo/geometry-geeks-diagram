@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Layer, Circle, Line, Group, Shape, Text } from 'react-konva';
-import { Filters } from 'konva'
 
 const mmToPx = (mm) => mm / 3;
 const pxToMm = (px) => px * 3;
@@ -31,49 +30,22 @@ class Point {
   }
 }
 
-// https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
-function hexToRgbA(hex, alpha){
-  var c;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-      c = hex.substring(1).split('');
-      if(c.length === 3){
-          c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-      }
-      c = `0x${c.join('')}`;
-      return `rgba(${[(c>>16)&255, (c>>8)&255, c&255].join(',')}, ${alpha})`;
-  }
-  throw new Error('Bad Hex');
-}
-
-
-
 class Bike extends Component {
 
-  // componentDidMount() {
-  //   if(this.bikeGroup){
-  //     this.bikeGroup.opacity(0.5)
-
-  //   }
-  // }
-
   render() {
+    const { width: canvasWidth, height: canvasHeight } = this.props.canvasDimensions;
     const bike = this.props.bike;
     const geo = bike.geo;
     const color = bike.color;
-    // const color = hexToRgbA(bike.color, 0.5);
-    const ground = window.innerHeight;
-    const leftEdge = mmToPx(geo.wheelSize);
+    const ground = canvasHeight - 10;
 
-    const bbMiddle = new Point(window.innerWidth/2, ground - mmToPx((geo.wheelSize / 2 - geo.bbDrop)));
+    const bbMiddle = new Point(canvasWidth/2, ground - mmToPx((geo.wheelSize / 2 - geo.bbDrop)));
     const rearWheelX = mmToPx(Math.sqrt(geo.chainstayLen * geo.chainstayLen - geo.bbDrop * geo.bbDrop));
     const rearWheelMiddle = new Point(bbMiddle.x - rearWheelX, ground - mmToPx(geo.wheelSize / 2));
-    // const rearWheelMiddle = new Point(leftEdge + mmToPx(geo.wheelSize / 2), ground - mmToPx(geo.wheelSize / 2));
-    // const bbMiddle = new Point(rearWheelMiddle.x + mmToPx(geo.chainstayLen), ground - mmToPx((geo.wheelSize / 2 - geo.bbDrop)));
     const topSeatIntersection = new Point(
       bbMiddle.x - mmToPx(Math.cos(degToRadians(geo.seatTubeAngle)) * geo.seatTubeLen),
       bbMiddle.y - mmToPx(Math.sin(degToRadians(geo.seatTubeAngle)) * geo.seatTubeLen),
     );
-    // const topTubeHeadTubeIntersection = new Point(topSeatIntersection.x + mmToPx(geo.topTubeLenEffective), topSeatIntersection.y)
     const topTubeHeadTubeIntersection = new Point(bbMiddle.x + mmToPx(geo.reach), bbMiddle.y - mmToPx(geo.stack))
     const bottomOfHeadTube = new Point(
       topTubeHeadTubeIntersection.x + mmToPx(Math.cos(degToRadians(geo.headTubeAngle)) * geo.headTubeLen),
@@ -94,14 +66,10 @@ class Bike extends Component {
       );
     }
 
-    // const stack = pxToMm(bbMiddle.y - topTubeHeadTubeIntersection.y);
-    // const reach = pxToMm(topTubeHeadTubeIntersection.x - bbMiddle.x);
-
     const spacerLengthMM = 50;
     const spacerLength = pointOnLine(topTubeHeadTubeIntersection, bottomOfHeadTube, mmToPx(spacerLengthMM));
     const topOfSpacers = new Point(topTubeHeadTubeIntersection.x - spacerLength.x, topTubeHeadTubeIntersection.y - spacerLength.y);
     // 90 degree stem
-    // const bars = new Point(topOfSpacers.x + 10, topOfSpacers.y);
     const stemLengthMM = 100;
     const stemLength = new Point(Math.cos(degToRadians(-11)) * mmToPx(stemLengthMM), Math.sin(degToRadians(-11)) * mmToPx(stemLengthMM));
     const bars = new Point(topOfSpacers.x + stemLength.x, topOfSpacers.y + stemLength.y);
@@ -159,9 +127,6 @@ class Bike extends Component {
               // context.moveTo(bbMiddle.x, bbMiddle.y);
               // context.lineTo(bbMiddle.x, bbMiddle.y + mmToPx(172))
 
-
-
-              // context.closePath();
               // Konva specific method
               context.fillStrokeShape(shape);
             }}
@@ -185,6 +150,7 @@ class Bike extends Component {
                 // reach
                 context.lineTo(bbMiddle.x + reachMM, bbMiddle.y - stackMM);
 
+                // Konva specific method
                 context.fillStrokeShape(shape);
               }}
           />
@@ -194,6 +160,8 @@ class Bike extends Component {
       </Layer>
     )
 
+    // alternative method of rendering where each tube/part is a different shape
+    // this causes overlap when using transparency
     return (
           <Layer>
             <Group opacity={0.3} >

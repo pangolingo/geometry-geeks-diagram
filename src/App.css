@@ -1,5 +1,10 @@
 body {
-  background: #333;
+  background: #eee;
+}
+
+#root {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .App {
