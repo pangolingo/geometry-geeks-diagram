@@ -1,3 +1,18 @@
+# GeometryGeeks.com Bike Diagrams
+
+This is a React app to draw vector diagrams of bike frames based on geometry from GeometryGeeks.com. There are two parts: 
+
+1. a standalone page to demo the functionality using test geometry scraped from GeometryGeeks.com
+2. a Chrome extension to draw bikes on GeometryGeeks.com page that have a comparison table.
+
+It's still pretty rough, and not good looking.
+
+![A screenshot of the bike diagram](screenshots/screenshot-1.png "A screenshot of the bike diagram")
+
+![An animated gif of the functionality](screenshots/demo-1.gif "An animated gif of the functionality")
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
